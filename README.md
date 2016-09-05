@@ -66,5 +66,16 @@ demo
 ```
 是不是很好用呢！
 
+## 更多用法
+```bash
+./show-busy-java-threads.sh -c 3
+```
+带`-c` 的参数表示显示的线程数
+
+```bash
+./show-busy-java-threads.sh -c 3 -p 2886
+```
+表示指定某个pid的进程。
+
 ## Reference
 <https://github.com/oldratlee/useful-scripts>
