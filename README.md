@@ -10,7 +10,7 @@ sudo ./show-busy-java-threads.sh
 ```
 demo
 
-```
+```java
 [root@localhost ~]# ./show-busy-java-threads.sh
 [1] Busy(0.3%) thread(2903/0xb57) stack of java process(2886) under user(root):
 "NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2182" daemon prio=10 tid=0x00007f64b023b000 nid=0xb57 runnable [0x00007f64a4844000]
