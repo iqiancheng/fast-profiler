@@ -34,35 +34,8 @@ demo
        	at org.apache.zookeeper.server.quorum.CommitProcessor.run(CommitProcessor.java:80)
        	- locked <0x00000000c53d84e8> (a org.apache.zookeeper.server.quorum.CommitProcessor)
 
-[3] Busy(0.2%) thread(2949/0xb85) stack of java process(2815) under user(root):
-"CommitProcessor:1" prio=10 tid=0x00007ff0c400e800 nid=0xb85 in Object.wait() [0x00007ff11db7a000]
-   java.lang.Thread.State: WAITING (on object monitor)
-       	at java.lang.Object.wait(Native Method)
-       	at java.lang.Object.wait(Object.java:503)
-       	at org.apache.zookeeper.server.quorum.CommitProcessor.run(CommitProcessor.java:80)
-       	- locked <0x00000000c5637d68> (a org.apache.zookeeper.server.quorum.CommitProcessor)
+...
 
-[4] Busy(0.1%) thread(2948/0xb84) stack of java process(2886) under user(root):
-"ProcessThread(sid:2 cport:-1):" prio=10 tid=0x00007f6458021800 nid=0xb84 waiting on condition [0x00007f649faf9000]
-   java.lang.Thread.State: WAITING (parking)
-       	at sun.misc.Unsafe.park(Native Method)
-       	- parking to wait for  <0x00000000c53514b8> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
-       	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:186)
-       	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2043)
-       	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
-       	at org.apache.zookeeper.server.PrepRequestProcessor.run(PrepRequestProcessor.java:120)
-
-[5] Busy(0.1%) thread(2950/0xb86) stack of java process(2815) under user(root):
-"FollowerRequestProcessor:1" prio=10 tid=0x00007ff0c4013000 nid=0xb86 waiting on condition [0x00007ff11dd7c000]
-   java.lang.Thread.State: WAITING (parking)
-       	at sun.misc.Unsafe.park(Native Method)
-       	- parking to wait for  <0x00000000c5637d20> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
-       	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:186)
-       	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2043)
-       	at java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:442)
-       	at org.apache.zookeeper.server.quorum.FollowerRequestProcessor.run(FollowerRequestProcessor.java:58)
-
-[root@localhost ~]#
 ```
 是不是很好用呢！
 
@@ -81,6 +54,23 @@ demo
 ./show-busy-java-threads.sh -p 2886
 ```
 表示指定某个pid的进程。
+
+## What
+用于快速排查Java的CPU性能问题(`top usage`值过高)，自动查出运行的Java进程中消耗CPU多的线程，并打印出其线程栈，从而确定导致性能问题的方法调用。
+
+PS，如何操作可以参见@bluedavy的《分布式Java应用》的【5.1.1 cpu消耗分析】一节，说得很详细：
+
+top命令找出有问题Java进程及线程id：
+
+- 开启线程显示模式
+- 按CPU使用率排序
+- 记下Java进程id及其CPU高的线程id
+- 用进程id作为参数，jstack有问题的Java进程
+- 手动转换线程id成十六进制（可以用printf %x 1234）
+- 查找十六进制的线程id（可以用grep）
+- 查看对应的线程栈
+
+查问题时，会要多次这样操作以确定问题，上面过程太繁琐太慢了。
 
 ## Reference
 <https://github.com/oldratlee/useful-scripts>
