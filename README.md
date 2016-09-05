@@ -75,6 +75,11 @@ demo
 ```bash
 ./show-busy-java-threads.sh -c 3 -p 2886
 ```
+表示指定某个pid的进程，并显示最多3个线程的详情。
+
+```bash
+./show-busy-java-threads.sh -p 2886
+```
 表示指定某个pid的进程。
 
 ## Reference
