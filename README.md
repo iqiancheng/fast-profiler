@@ -1,4 +1,5 @@
 # fast-profiler
+
 快速查看占用CPU前五的java线程栈
 
 ## Usage
@@ -8,7 +9,8 @@ wget https://raw.githubusercontent.com/iqiancheng/fast-profiler/master/show-busy
 sudo chmod u+x show-busy-java-threads.sh
 sudo ./show-busy-java-threads.sh
 ```
-demo
+
+### demo
 
 ```java
 [root@localhost ~]# ./show-busy-java-threads.sh
@@ -35,42 +37,48 @@ demo
        	- locked <0x00000000c53d84e8> (a org.apache.zookeeper.server.quorum.CommitProcessor)
 
 ...
-
 ```
+
 是不是很好用呢！
 
 ## 更多用法
+
 ```bash
 ./show-busy-java-threads.sh -c 3
 ```
+
 带`-c` 的参数表示显示的线程数
 
 ```bash
 ./show-busy-java-threads.sh -c 3 -p 2886
 ```
+
 表示指定某个pid的进程，并显示最多3个线程的详情。
 
 ```bash
 ./show-busy-java-threads.sh -p 2886
 ```
+
 表示指定某个pid的进程。
 
 ## What
-用于快速排查Java的CPU性能问题(`top usage`值过高)，自动查出运行的Java进程中消耗CPU多的线程，并打印出其线程栈，从而确定导致性能问题的方法调用。
 
-PS，如何操作可以参见@bluedavy的《分布式Java应用》的【5.1.1 cpu消耗分析】一节，说得很详细：
+用于快速排查`Java`的`CPU`性能问题(`top us`值过高)，自动查出运行的`Java`进程中消耗`CPU`多的线程，并打印出其线程栈，从而确定导致性能问题的方法调用。  
+目前只支持`Linux`。原因是`Mac`、`Windows`的`ps`命令不支持列出进程的线程`id`，更多信息参见[#33](https://github.com/oldratlee/useful-scripts/issues/33)，欢迎提供解法。
 
-top命令找出有问题Java进程及线程id：
+PS，如何操作可以参见[@bluedavy](http://weibo.com/bluedavy)的[《分布式Java应用》](https://book.douban.com/subject/4848587/)的【5.1.1 `CPU`消耗分析】一节，说得很详细：
 
-- 开启线程显示模式
-- 按CPU使用率排序
-- 记下Java进程id及其CPU高的线程id
-- 用进程id作为参数，jstack有问题的Java进程
-- 手动转换线程id成十六进制（可以用printf %x 1234）
-- 查找十六进制的线程id（可以用grep）
-- 查看对应的线程栈
+1. `top`命令找出有问题`Java`进程及线程`id`：
+    1. 开启线程显示模式（`top -H`，或是打开`top`后按`H`）
+    1. 按`CPU`使用率排序（`top`缺省是按`CPU`使用降序，已经合要求；打开`top`后按`P`可以显式指定按`CPU`使用降序）
+    1. 记下`Java`进程`id`及其`CPU`高的线程`id`
+1. 用进程`id`作为参数，`jstack`有问题的`Java`进程
+1. 手动转换线程`id`成十六进制（可以用`printf %x 1234`）
+1. 查找十六进制的线程`id`（可以用`vim`的查找功能`/0x1234`，或是`grep 0x1234 -A 20`）
+1. 查看对应的线程栈，以分析问题
 
-查问题时，会要多次这样操作以确定问题，上面过程太繁琐太慢了。
+查问题时，会要多次上面的操作以分析确定问题，这个过程**太繁琐太慢了**。
 
 ## Reference
-<https://github.com/oldratlee/useful-scripts>
+
+更多使用方式详见用户文档： <https://github.com/oldratlee/useful-scripts/blob/master/docs/java.md#%E7%94%A8%E6%B3%95>
