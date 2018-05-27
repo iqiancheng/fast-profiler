@@ -1,19 +1,20 @@
 # fast-profiler
 
-快速查看占用CPU前五的java线程栈
+快速查看占用CPU前五的java线程栈。    
+\# 脚本来自 https://github.com/oldratlee/useful-scripts/blob/master/docs/java.md#beer-show-busy-java-threads
 
 ## Usage
 
 ```bash
-wget https://raw.githubusercontent.com/iqiancheng/fast-profiler/master/show-busy-java-threads.sh
-sudo chmod u+x show-busy-java-threads.sh
-sudo ./show-busy-java-threads.sh
+wget https://raw.githubusercontent.com/iqiancheng/fast-profiler/master/show-busy-java-threads
+sudo chmod u+x show-busy-java-threads
+sudo ./show-busy-java-threads
 ```
 
 ### demo
 
 ```java
-[root@localhost ~]# ./show-busy-java-threads.sh
+[root@localhost ~]# ./show-busy-java-threads
 [1] Busy(0.3%) thread(2903/0xb57) stack of java process(2886) under user(root):
 "NIOServerCxn.Factory:0.0.0.0/0.0.0.0:2182" daemon prio=10 tid=0x00007f64b023b000 nid=0xb57 runnable [0x00007f64a4844000]
    java.lang.Thread.State: RUNNABLE
@@ -44,19 +45,19 @@ sudo ./show-busy-java-threads.sh
 ## 更多用法
 
 ```bash
-./show-busy-java-threads.sh -c 3
+./show-busy-java-threads -c 3
 ```
 
 带`-c` 的参数表示显示的线程数
 
 ```bash
-./show-busy-java-threads.sh -c 3 -p 2886
+./show-busy-java-threads -c 3 -p 2886
 ```
 
 表示指定某个pid的进程，并显示最多3个线程的详情。
 
 ```bash
-./show-busy-java-threads.sh -p 2886
+./show-busy-java-threads -p 2886
 ```
 
 表示指定某个pid的进程。
